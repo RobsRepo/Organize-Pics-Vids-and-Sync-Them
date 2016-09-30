@@ -1,6 +1,5 @@
 import os.path
 import time
-import shutil
 import filecmp
 
 class FileOrganizer:
@@ -17,6 +16,15 @@ class FileOrganizer:
         return_val = False
         file_name = os.path.basename(file_to_check)
 
+        modifiedTime = os.path.getmtime(file_to_check)
+        createTime = os.path.getctime(file_to_check)
+        time_string = ""
+        date_format = '%Y-%m-%d-%H-%M-%S'
+        if modifiedTime < createTime:
+            time_string = time.strftime(date_format, time.localtime(modifiedTime))
+        else:
+            time_string = time.strftime(date_format, time.localtime(createTime))
+
         # Check if this file name exists in the destination directory
         if os.path.isfile(directory_to_check + "/" + file_name):
             new_file_counter = 1
@@ -31,7 +39,7 @@ class FileOrganizer:
                     return_val = True
                     break
 
-        return return_val, file_name
+        return return_val, time_string + "-" + file_name
 
     def create_version_directory(self,current_full_file_path):
         modifiedTime = os.path.getmtime(current_full_file_path)
@@ -47,5 +55,5 @@ class FileOrganizer:
         return (year, year_month)
 
     def write_item_to_log(self,status,origin_file,dest_file):
-          with open(self.log_file_name, 'a') as f:
+        with open(self.log_file_name, 'a') as f:
             f.write(status + "," + origin_file + "," + dest_file + '\n')
