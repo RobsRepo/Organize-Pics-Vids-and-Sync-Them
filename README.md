@@ -12,7 +12,7 @@ These Python scripts have 2 major functions:
 
 ##Output of Organize Script
 This script will do the following:
-- It takes the pictures from a specified folder and puts them into another. The destination of these files will be in a folder with the format “year”/”year-month”. It also takes the videos and puts them in its own folder. For example, it will look something like this for the pictures: 
+- It takes the pictures from a specified folder and puts them into another. The destination of these files will be in a folder with the format “year”/”year-month”. It also takes the videos and puts them in its own folder. For example, it will look something like this for the pictures:
 
   ![alt tag](https://github.com/RobsRepo/Organize-Pics-Vids-and-Sync-Them/blob/master/pictures.png)
 
@@ -33,7 +33,9 @@ This script will do the following:
 - Once all of the files have been synchronized over a csv log report will be produced that indicates whether or not the file got copied, the original file path and the destination file path.
 
 ##To Run the Organize Script:
-Inside config.properties, under "[Move_Config]", make sure you have the following 4 properties filled out correctly.
+Inside config.properties, under "[Move_Config]", make sure you have the following properties filled out correctly.
+- deviceName="This represents the device. IE: Brody's iphone, Bobby's iphone6, etc"
+- ommitTimeDeviceFlag="Set this to False if you want the timestamp and the device name inside the name of your new file, True otherwise"
 - directory="This represents the root directory to where your pictures and videos are"
 - videoDirectory="Where you would like to have your videos stored"
 - picturesDirectory="Where you would like to have your pictures stored"
@@ -46,5 +48,10 @@ Inside config.properties, under "[Copy_Config]", make sure you have the followin
 - originDirectory="The root folder of the folder you would like to copy/sync"
 - destinationDirectory="The destination of where you would like the files copied to"
 - logFileName="The csv log report on what got copied over and what did not"
+
+##Alternatively, you can use rsync
+rsync -avP /Users/brody/Desktop/test/Pictures /Users/brody/Desktop/test/Pictures_more_meta
+Use that to sync files between dir1 and dir2 showing the progress and also keeping the file properties
+
 
 Once all of that is filled out, run the following: “python SyncFolder.py”

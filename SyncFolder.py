@@ -11,7 +11,7 @@ class SyncFolder(FileOrganizer):
         self.origin_directory = config.get("Copy_Config", "originDirectory")
         self.destination_directory = config.get("Copy_Config", "destinationDirectory")
         self.log_file_name = config.get("Copy_Config", "logFileName")
-        FileOrganizer.__init__(self,self.log_file_name)
+        FileOrganizer.__init__(self,self.log_file_name,"")
 
     def copy_file(self,origin_directory,destination_directory,dir_path,current_file):
         new_post_fix_dir_path = dir_path.replace(origin_directory, "")

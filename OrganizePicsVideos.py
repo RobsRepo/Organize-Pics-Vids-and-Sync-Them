@@ -13,7 +13,9 @@ class OrganizePicsVideos(FileOrganizer):
         self.video_directory = config.get("Move_Config", "videoDirectory")
         self.pictures_directory = config.get("Move_Config", "picturesDirectory")
         self.log_file_name = config.get("Move_Config", "logFileName")
-        FileOrganizer.__init__(self,self.log_file_name)
+        self.device_name =  config.get("Move_Config", "deviceName")
+        self.ommit_time_device_flag =  config.getboolean("Move_Config", "ommitTimeDeviceFlag")
+        FileOrganizer.__init__(self,self.log_file_name,self.device_name,self.ommit_time_device_flag)
 
     def move_file(self,base_directory,current_full_file_path,current_file_name):
         version_year, version_folder = self.create_version_directory(current_full_file_path)
@@ -44,7 +46,7 @@ class OrganizePicsVideos(FileOrganizer):
                     file_move_count += 1
                     if file_extension.lower() in (".mov", ".mp4"):
                         self.move_file(self.video_directory,current_full_file_path,current_file)
-                    else:
+                    elif  file_extension.lower() in (".jpg", ".jpeg", ".png", ".tif", ".gif"):
                         self.move_file(self.pictures_directory,current_full_file_path,current_file)
 
         print "Total files moved: " + str(file_move_count)

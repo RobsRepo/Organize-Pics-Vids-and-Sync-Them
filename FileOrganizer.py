@@ -4,8 +4,10 @@ import filecmp
 
 class FileOrganizer:
 
-    def __init__(self,log_file_name):
+    def __init__(self,log_file_name,device_name,ommit_time_device_flag):
         self.log_file_name = log_file_name
+        self.device_name = device_name
+        self.ommit_time_device_flag = ommit_time_device_flag
         self.write_item_to_log("Action","Origin","Destination")
 
     def create_directory(self,d):
@@ -16,10 +18,11 @@ class FileOrganizer:
         return_val = False
         file_name = os.path.basename(file_to_check)
 
+        # Pull the creation/mod time out to prefix to the new file name
         modifiedTime = os.path.getmtime(file_to_check)
         createTime = os.path.getctime(file_to_check)
         time_string = ""
-        date_format = '%Y-%m-%d-%H-%M-%S'
+        date_format = '%Y%m%d_%H%M%S'
         if modifiedTime < createTime:
             time_string = time.strftime(date_format, time.localtime(modifiedTime))
         else:
@@ -39,7 +42,10 @@ class FileOrganizer:
                     return_val = True
                     break
 
-        return return_val, time_string + "-" + file_name
+        if self.ommit_time_device_flag:
+            return return_val, file_name
+        else:
+            return return_val, time_string + "-" + self.device_name  + "-" + file_name
 
     def create_version_directory(self,current_full_file_path):
         modifiedTime = os.path.getmtime(current_full_file_path)
